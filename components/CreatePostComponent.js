@@ -40,7 +40,7 @@ const styles = {
         borderColor: '#ededed',
         borderRadius: 8,
         marginBottom: -20,
-        backgroundColor: '#eee',
+        backgroundColor: '#fff',
         paddingVertical: 15,
     },
 }

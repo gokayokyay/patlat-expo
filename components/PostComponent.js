@@ -6,11 +6,11 @@ class PostComponent extends React.Component {
     render() {
         return (
             <View style={[styles.root, this.props.style]}>
-                <View onTouchEnd={(e) => console.log('pressed')} style={styles.container}>
+                <View style={styles.container}>
                     <View style={styles.top.container}>
-                        <View style={styles.top.textView.container}>
+                        <TouchableOpacity style={styles.top.textView.container}>
                             <Text>Just burned 2000 calories. That's the last time I leave brownies in the oven while I sleep. :)</Text>
-                        </View>
+                        </TouchableOpacity>
                         <View style={styles.top.voteView.container}>
                             <TouchableOpacity style={styles.top.voteView.upArrow}>
                                 <Ionicons name="ios-arrow-up" size={32} color="black" />
@@ -51,7 +51,8 @@ const styles = {
         
         elevation: 4,
 
-        maxHeight: 180
+        maxHeight: 180,
+        minHeight: 140
     },
     container: {
         flex: 1,
@@ -103,7 +104,8 @@ const styles = {
                 },
                 text: {
                     fontSize: 20,
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    textAlign: 'center'
                 }
             },
             downArrow: {
