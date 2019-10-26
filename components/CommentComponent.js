@@ -48,18 +48,9 @@ const styles = {
         flex: 1,
         // backgroundColor: 'violet',
         padding: '5%',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 7,
-        
-        elevation: 4,
 
         maxHeight: 180,
-        minHeight: 140
+        minHeight: 100
     },
     container: {
         flex: 1,
@@ -70,7 +61,17 @@ const styles = {
         backgroundColor: 'white',
         flexDirection: 'row',
         paddingTop: '4%',
-        paddingBottom: '20%',
+        // paddingBottom: '20%',
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 7,
+        
+        elevation: 4,
     },
     left: {
         container: {
@@ -108,6 +109,7 @@ const styles = {
             flex: 1,
             // backgroundColor: 'crimson',
             alignItems: 'flex-start',
+            bottom: '5%'
         },
         voteButtons: {
             flex: 1,

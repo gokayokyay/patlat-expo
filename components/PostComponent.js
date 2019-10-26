@@ -43,15 +43,6 @@ const styles = {
     root: {
         flex: 1,
         padding: '5%',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 7,
-        
-        elevation: 4,
 
         maxHeight: 180,
         minHeight: 140
@@ -64,7 +55,15 @@ const styles = {
         borderRadius: 8,
         backgroundColor: 'white',
         // padding: '3%',
-
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 7,
+        
+        elevation: 4,
     },
     top: {
         container: {

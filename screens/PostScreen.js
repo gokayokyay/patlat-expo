@@ -36,7 +36,7 @@ class PostScreen extends React.Component {
                         />
                     </View>
                     <View style={styles.bottomView.input.container}>
-                        <View style={{header: '100%', width: '100%', flex: 1, flexDirection: 'row'}}>
+                        <View style={{height: '100%', width: '100%', flex: 1, flexDirection: 'row'}}>
                             <TextInput 
                                 paddingLeft={12}
                                 placeholder={'Send a reply...'}
