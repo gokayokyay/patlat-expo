@@ -8,7 +8,9 @@ class PostComponent extends React.Component {
             <View style={[styles.root, this.props.style]}>
                 <View style={styles.container}>
                     <View style={styles.top.container}>
-                        <TouchableOpacity style={styles.top.textView.container}>
+                        <TouchableOpacity 
+                            // onPress={(e) => this.props.navigation.navigate('Post')} 
+                            style={styles.top.textView.container}>
                             <Text>Just burned 2000 calories. That's the last time I leave brownies in the oven while I sleep. :)</Text>
                         </TouchableOpacity>
                         <View style={styles.top.voteView.container}>

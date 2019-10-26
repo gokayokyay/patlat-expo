@@ -3,6 +3,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import HomeScreen from './screens/HomeScreen';
 import MainScreen from './screens/MainScreen';
+import PostScreen from './screens/PostScreen';
 
 const AppNavigator = createStackNavigator(
   {
@@ -11,10 +12,13 @@ const AppNavigator = createStackNavigator(
     },
     Main: {
       screen: MainScreen
+    },
+    Post: {
+      screen: PostScreen
     }
   },
   {
-    initialRouteName: 'Main',
+    initialRouteName: 'Post',
     defaultNavigationOptions: {
       header: null
     }
