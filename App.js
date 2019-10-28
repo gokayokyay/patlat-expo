@@ -11,6 +11,7 @@ if (Platform.OS === 'web') {
   
   Parse.setAsyncStorage(AsyncStorage);
 }
+Parse.User.enableUnsafeCurrentUser();
 
 Parse.initialize("jTYbiFTUrvs2AsjkAc2vY3ycgyAxizdX", "MJU1zSv0CWZGV7iZddALP9njdlr8gNF7");
 //javascriptKey is required only if you have it on server.

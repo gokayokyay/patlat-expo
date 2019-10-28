@@ -22,12 +22,12 @@ class FeedSelectionComponent extends React.Component {
             <View style={[styles.root, this.props.style]}>
                 <View style={[styles.containers, {alignItems: 'flex-end', justifyContent: 'flex-start'}]}>
                     <TouchableOpacity style={styles.buttonLeft.container} onPress={() => this.props.dispatch(actions.synchronousActions.selectFeed(FEED_NAMES[0]))}>
-                        <Text style={[styles.buttonLeft.text, {opacity: this.props.state.selectedFeed == FEED_NAMES[0] ? 1 : 0.5}]}>
+                        <Text style={[styles.buttonLeft.text, {opacity: this.props.state.selectFeed == FEED_NAMES[0] ? 1 : 0.5}]}>
                             {FEED_NAMES[0]}
                         </Text>
                     </TouchableOpacity >
                     <TouchableOpacity style={styles.buttonLeft.container} onPress={() => this.props.dispatch(actions.synchronousActions.selectFeed(FEED_NAMES[1]))}>
-                        <Text style={[styles.buttonLeft.text, {opacity: this.props.state.selectedFeed == FEED_NAMES[1] ? 1 : 0.5}]}>
+                        <Text style={[styles.buttonLeft.text, {opacity: this.props.state.selectFeed == FEED_NAMES[1] ? 1 : 0.5}]}>
                             {FEED_NAMES[1]}
                         </Text>
                     </TouchableOpacity>

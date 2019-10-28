@@ -1,9 +1,25 @@
 import React from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, Platform } from 'react-native';
 import { Hideo } from 'react-native-textinput-effects';
 import FontAwesomeIcon from '@expo/vector-icons/FontAwesome';
+import { connect } from 'react-redux';
+import actions from '../actions';
+
+var Parse;
+if (Platform.OS === 'web') {
+  Parse = require('parse/node');
+} else {
+  Parse = require('parse/react-native');
+}
 
 class HomeScreen extends React.Component {
+  componentWillUpdate(){
+    console.log(this.props);
+    if (this.props.state.userLogin.loginError == null && this.props.state.userLogin.loginPending == false) {
+      this.props.navigation.navigate('Main');
+    }
+    // console.log(Parse.User.current());
+  }
     render() {
       return (
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000' }}>
@@ -17,7 +33,7 @@ class HomeScreen extends React.Component {
                 inputStyle={{ color: '#464949' }}
                 label={'Email'}
                 style={styles.inputStyle}
-                onChangeText={(text) => console.log(text)}
+                onChangeText={(text) => this.setState({email: text})}
                />
               <Hideo
                 iconClass={FontAwesomeIcon}
@@ -28,8 +44,21 @@ class HomeScreen extends React.Component {
                 label={'Password'}
                 style={styles.inputStyle}
                 secureTextEntry
+                onChangeText={(text) => this.setState({password: text})}
                />
-               <TouchableOpacity style={styles.sendButton} onPress={() => this.props.navigation.navigate('Main')}>
+               <TouchableOpacity style={styles.sendButton} onPress={async () => {
+                  let user = new Parse.User();
+                  user.set("username", this.state.email);
+                  user.set("password", this.state.password);
+                  user.set("email", this.state.email);
+                  try {
+                    await this.props.dispatch(actions.asynchronousActions.userSignup(user));
+                    // await this.props.dispatch(actions.asynchronousActions.userLogin(user));
+                  } catch (err) {
+                    console.log(err);
+                  }
+                 }
+                }>
                     <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
                         PATLAT
                     </Text>
@@ -71,5 +100,9 @@ const styles = {
     }
 }
 
-export default HomeScreen;
+const mapStateToProps = (state) => ({
+  state
+})
+
+export default connect(mapStateToProps)(HomeScreen);
   

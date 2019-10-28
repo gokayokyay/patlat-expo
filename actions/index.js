@@ -1,4 +1,11 @@
-import Parse from 'parse/react-native';
+import { Platform } from 'react-native';
+
+var Parse;
+if (Platform.OS === 'web') {
+  Parse = require('parse/node');
+} else {
+  Parse = require('parse/react-native');
+}
 
 const SYNCHRONOUS = {
     SELECT_FEED: 'SELECT_FEED',
@@ -23,8 +30,13 @@ const ASYNCHRONOUS = {
     USER_SIGNUP_PENDING: 'USER_SIGNUP_PENDING',
     USER_SIGNUP_SUCCESS: 'USER_SIGNUP_SUCCESS',
     USER_SIGNUP_ERROR: 'USER_SIGNUP_ERROR',
-    USER_SIGNUP: 'USER_SIGNUP'
-}
+    USER_SIGNUP: 'USER_SIGNUP',
+
+    USER_LOGIN: 'USER_LOGIN',
+    USER_LOGIN_PENDING: 'USER_LOGIN_PENDING',
+    USER_LOGIN_ERROR: 'USER_LOGIN_ERROR',
+    USER_LOGIN_SUCCESS: 'USER_LOGIN_SUCCESS'
+};
 
 const actions = {
     SYNCHRONOUS,
@@ -58,9 +70,9 @@ const actions = {
             type: ASYNCHRONOUS.USER_SIGNUP_PENDING,
             payload: user
         }),
-        userSignupError: (user) => ({
+        userSignupError: (error) => ({
             type: ASYNCHRONOUS.USER_SIGNUP_ERROR,
-            payload: user
+            payload: error
         }),
         userSignupSuccess: (user) => ({
             type: ASYNCHRONOUS.USER_SIGNUP_SUCCESS,
@@ -71,9 +83,35 @@ const actions = {
                 dispatch(actions.asynchronousActions.userSignupPending(user));
                 try {
                     let savedUser = await user.signUp();
-                    dispatch(actions.asynchronousActions.userSignupSuccess(savedUser));
+                    console.log("user", savedUser.attributes);
+                    await dispatch(action.asynchronousActions.userLoginSuccess(savedUser));
+                    await dispatch(action.asynchronousActions.userSignupSuccess(user));
                 } catch (err) {
-                    dispatch(actions.asynchronousActions.userSignupError(user));
+                    dispatch(actions.asynchronousActions.userSignupError(err));
+                }
+            }
+        },
+        userLoginPending: (user) => ({
+            type: ASYNCHRONOUS.USER_LOGIN_PENDING,
+            payload: user
+        }),
+        userLoginError: (error) => ({
+            type: ASYNCHRONOUS.USER_LOGIN_ERROR,
+            payload: error
+        }),
+        userLoginSuccess: (user) => ({
+            type: ASYNCHRONOUS.USER_LOGIN_SUCCESS,
+            payload: user
+        }),
+        userLogin: ({username, password}) => {
+            return async dispatch => {
+                dispatch(actions.asynchronousActions.userLoginPending({username, password}));
+                try {
+                    let user = await Parse.User.logIn(username, password);
+                    console.log(user);
+                    await dispatch(actions.asynchronousActions.userLoginSuccess(user));
+                } catch (err) {
+                    dispatch(actions.asynchronousActions.userLoginError(err));
                 }
             }
         }
