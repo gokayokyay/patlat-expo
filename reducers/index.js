@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { selectedFeed } from './FeedSelectionReducers';
+import { selectFeed } from './FeedSelectionReducers';
 export default combineReducers({
-    selectedFeed
+    selectFeed
 });

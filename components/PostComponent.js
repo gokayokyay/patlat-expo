@@ -1,18 +1,35 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { withNavigation } from 'react-navigation';
 
 class PostComponent extends React.Component {
+
+    renderTextSection() {
+        if (this.props.navigation.state.routeName === 'Main') {
+            return (
+                <TouchableOpacity 
+                    onPress={(e) => this.props.navigation.navigate('Post')} 
+                    style={styles.top.textView.container}>
+                    <Text>Just burned 2000 calories. That's the last time I leave brownies in the oven while I sleep. :)</Text>
+                </TouchableOpacity>
+            )
+        } else {
+            return (
+                <View 
+                    style={styles.top.textView.container}>
+                    <Text>Just burned 2000 calories. That's the last time I leave brownies in the oven while I sleep. :)</Text>
+                </View>
+            )
+        }
+    }
+
     render() {
         return (
             <View style={[styles.root, this.props.style]}>
                 <View style={styles.container}>
                     <View style={styles.top.container}>
-                        <TouchableOpacity 
-                            // onPress={(e) => this.props.navigation.navigate('Post')} 
-                            style={styles.top.textView.container}>
-                            <Text>Just burned 2000 calories. That's the last time I leave brownies in the oven while I sleep. :)</Text>
-                        </TouchableOpacity>
+                        {this.renderTextSection()}
                         <View style={styles.top.voteView.container}>
                             <TouchableOpacity style={styles.top.voteView.upArrow}>
                                 <Ionicons name="ios-arrow-up" size={32} color="black" />
@@ -151,4 +168,4 @@ const styles = {
     }
 }
 
-export default PostComponent;
+export default withNavigation(PostComponent);

@@ -11,7 +11,7 @@ class PostScreen extends React.Component {
             <View style={styles.root}>
                 <View style={styles.topView.container}>
                     <View style={styles.topView.header.container}>
-                        <TouchableOpacity style={styles.topView.header.backView}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={styles.topView.header.backView}>
                             <Ionicons name="ios-arrow-back" size={32} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.topView.header.reportView}>

@@ -17,6 +17,7 @@ class HomeScreen extends React.Component {
                 inputStyle={{ color: '#464949' }}
                 label={'Email'}
                 style={styles.inputStyle}
+                onChangeText={(text) => console.log(text)}
                />
               <Hideo
                 iconClass={FontAwesomeIcon}
