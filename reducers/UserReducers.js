@@ -12,14 +12,14 @@ export const userSignup = (state = {}, action) => {
             return state;
     }
 }
-export const userLogin = (state = {}, action) => {
+export const userLogin = (state = {loginError: true}, action) => {
     switch (action.type) {
         case actions.ASYNCHRONOUS.USER_LOGIN_PENDING:
             return {...state, loginPending: true};
         case actions.ASYNCHRONOUS.USER_LOGIN_ERROR:
-            return {...state, loginPending: false, loginError: action.payload, user: action.payload};
+            return {...state, loginPending: false, loginError: action.payload};
         case actions.ASYNCHRONOUS.USER_LOGIN_SUCCESS:
-            return {...state, loginPending: false, loginError: null};
+            return {...state, loginPending: false, loginError: null, user: action.payload};
         default:
             return state;
     }

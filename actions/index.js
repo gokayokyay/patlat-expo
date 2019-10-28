@@ -1,11 +1,7 @@
-import { Platform } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
-var Parse;
-if (Platform.OS === 'web') {
-  Parse = require('parse/node');
-} else {
-  Parse = require('parse/react-native');
-}
+// import Parse from 'parse/node';
+import Parse from 'parse/react-native';
 
 const SYNCHRONOUS = {
     SELECT_FEED: 'SELECT_FEED',
@@ -83,10 +79,14 @@ const actions = {
                 dispatch(actions.asynchronousActions.userSignupPending(user));
                 try {
                     let savedUser = await user.signUp();
-                    console.log("user", savedUser.attributes);
-                    await dispatch(action.asynchronousActions.userLoginSuccess(savedUser));
-                    await dispatch(action.asynchronousActions.userSignupSuccess(user));
+                    console.log("savedUser", savedUser.attributes);
+                    await dispatch(actions.asynchronousActions.userLoginSuccess(savedUser));
+                    let currentUser = await Parse.User.become(savedUser.attributes.sessionToken);
+                    AsyncStorage.setItem('sessionToken', savedUser.attributes.sessionToken);
+                    AsyncStorage.setItem('username', savedUser.attributes.username);
+                    await dispatch(actions.asynchronousActions.userSignupSuccess(user));
                 } catch (err) {
+                    console.log(err);
                     dispatch(actions.asynchronousActions.userSignupError(err));
                 }
             }
@@ -113,6 +113,11 @@ const actions = {
                 } catch (err) {
                     dispatch(actions.asynchronousActions.userLoginError(err));
                 }
+            }
+        },
+        userLoggedIn: () => {
+            return async dispatch => {
+                Parse.User.currentAsync().then(user => user ? dispatch(actions.asynchronousActions.userLoginSuccess(user)): dispatch(actions.asynchronousActions.userLoginError(true)));
             }
         }
     }

@@ -1,8 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import actions from '../actions';
+import { withNavigation } from 'react-navigation';
+
+// DEV
+import Parse from 'parse/react-native';
+// DEV
 
 const FEED_NAMES = [
     "NEW",
@@ -39,7 +44,14 @@ class FeedSelectionComponent extends React.Component {
                             ODTU
                         </Text>
                     </TouchableOpacity >
-                    <TouchableOpacity style={styles.buttonRight.rightContainer}>
+                    <TouchableOpacity 
+                        onPress={async () => {
+                            await AsyncStorage.clear();
+                            await Parse.User.logOut();
+                            this.props.navigation.navigate('Auth');
+                            }
+                        } 
+                        style={styles.buttonRight.rightContainer}>
                         <Ionicons name="md-person" size={24} color="white" />
                     </TouchableOpacity >
                 </View>
@@ -103,4 +115,4 @@ const mapStateToProps = (state) => ({
     state
 })
 
-export default connect(mapStateToProps)(FeedSelectionComponent);
+export default connect(mapStateToProps)(withNavigation(FeedSelectionComponent));

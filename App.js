@@ -1,16 +1,15 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { createAppContainer } from 'react-navigation';
+import { Platform, AsyncStorage } from 'react-native';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-var Parse;
-if (Platform.OS === 'web') {
-  Parse = require('parse/node');
-} else {
-  Parse = require('parse/react-native');
-  
-  Parse.setAsyncStorage(AsyncStorage);
-}
+import { Provider } from 'react-redux';
+import store from './store';
+
+// import Parse from 'parse/node';
+import Parse from 'parse/react-native';
+
+Parse.setAsyncStorage(AsyncStorage);
 Parse.User.enableUnsafeCurrentUser();
 
 Parse.initialize("jTYbiFTUrvs2AsjkAc2vY3ycgyAxizdX", "MJU1zSv0CWZGV7iZddALP9njdlr8gNF7");
@@ -18,35 +17,43 @@ Parse.initialize("jTYbiFTUrvs2AsjkAc2vY3ycgyAxizdX", "MJU1zSv0CWZGV7iZddALP9njdl
 
 Parse.serverURL = 'https://whispering-spire-93426.herokuapp.com/parse'
 
-
-import { Provider } from 'react-redux';
-import store from './store';
-
 import HomeScreen from './screens/HomeScreen';
 import MainScreen from './screens/MainScreen';
 import PostScreen from './screens/PostScreen';
+import AuthLoadingScreen from './screens/AuthLoadingScreen';
+import actions from './actions';
 
-const AppNavigator = createStackNavigator(
-  {
-    Home: {
-      screen: HomeScreen,
-    },
-    Main: {
-      screen: MainScreen
-    },
-    Post: {
-      screen: PostScreen
-    }
-  },
-  {
-    initialRouteName: 'Home',
-    defaultNavigationOptions: {
-      header: null
-    }
+const AuthStack = createStackNavigator({
+  Home: HomeScreen
+}, {
+  initialRouteName: 'Home',
+  defaultNavigationOptions: {
+    header: null
   }
-);
+});
+const AppStack = createStackNavigator({
+  Main: MainScreen,
+  Post: PostScreen
+}, {
+  initialRouteName: 'Main',
+  defaultNavigationOptions: {
+    header: null
+  }
+});
+const AppNavigator = createSwitchNavigator({
+  Auth: AuthStack,
+  App: AppStack,
+  AuthLoading: AuthLoadingScreen
+}, {
+  initialRouteName: 'AuthLoading',
+  defaultNavigationOptions: {
+    header: null
+  }
+});
 
 const Navigation = createAppContainer(AppNavigator);
+
+store.dispatch(actions.asynchronousActions.userLoggedIn());
 
 export default class App extends React.Component {
   render(){

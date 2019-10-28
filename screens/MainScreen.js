@@ -44,6 +44,9 @@ const DATA = [
   ];
 
 class MainScreen extends React.Component {
+  componentDidMount(){
+    console.log(this.props);
+  }
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#eee' }}>

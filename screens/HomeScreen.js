@@ -1,25 +1,22 @@
 import React from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, Platform, Alert } from 'react-native';
 import { Hideo } from 'react-native-textinput-effects';
 import FontAwesomeIcon from '@expo/vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import actions from '../actions';
 
-var Parse;
-if (Platform.OS === 'web') {
-  Parse = require('parse/node');
-} else {
-  Parse = require('parse/react-native');
-}
+// import Parse from 'parse/node';
+import Parse from 'parse/react-native';
 
 class HomeScreen extends React.Component {
-  componentWillUpdate(){
-    console.log(this.props);
-    if (this.props.state.userLogin.loginError == null && this.props.state.userLogin.loginPending == false) {
-      this.props.navigation.navigate('Main');
+    componentWillMount(){
+      Parse.User.currentAsync().then(user => user ? this.props.navigation.navigate('App'):console.log("No user")).catch(err => console.log(err));
     }
-    // console.log(Parse.User.current());
-  }
+    componentWillUpdate(){
+      if (this.props.state.userLogin.loginError == null && this.props.state.userLogin.loginPending == false) {
+        this.props.navigation.navigate('App');
+      }
+    }
     render() {
       return (
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000' }}>
@@ -56,6 +53,18 @@ class HomeScreen extends React.Component {
                     // await this.props.dispatch(actions.asynchronousActions.userLogin(user));
                   } catch (err) {
                     console.log(err);
+                    try {
+                      await this.props.dispatch(actions.asynchronousActions.userLogin({username: this.state.email, password: this.state.password}));
+                    } catch (loginError) {
+                      console.log(loginError);
+                      Alert.alert(
+                        "Giriş Hatası",
+                        "Kullanıcı bilgileriniz hatalı!",
+                        [
+                          {text: 'OK'},
+                        ]
+                      )
+                    }
                   }
                  }
                 }>
