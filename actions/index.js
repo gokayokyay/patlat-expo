@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+import { Post } from '../models';
 
 // import Parse from 'parse/node';
 import Parse from 'parse/react-native';
@@ -48,20 +49,45 @@ const actions = {
             type: ASYNCHRONOUS.CREATE_POST_PENDING,
             payload: post
         }),
-        createPostError: (post) => ({
+        createPostError: (err) => ({
             type: ASYNCHRONOUS.CREATE_POST_ERROR,
-            payload: post
+            payload: err
         }),
         createPostSuccess: (post) => ({
             type: ASYNCHRONOUS.CREATE_POST_SUCCESS,
             payload: post
         }),
-        // createPost: (post) => {
-        //     return dispatch => {
-        //         dispatch(actions.asynchronousActions.createPostPending(post));
+        createPost: (post) => {
+            return async dispatch => {
+                dispatch(actions.asynchronousActions.createPostPending(post));
+                try {
+                    console.log("newPost incoming...", post);
+                    // let currentUser = await Parse.User.currentAsync();
+                    // let newPost = new Post({
+                    //     user: currentUser.username,
+                    //     message: post.message,
+                    //     replies: [],
+                    // });
+                    // let newPost = new Post();
+                    // newPost.set('user', currentUser.username);
+                    // newPost.set('message', post.message);
+                    // newPost.set('replies', []);
 
-        //     }
-        // },
+                    var newPost = await Post.default.create(post.message);
+
+                    console.log("newPost", newPost);
+                    newPost.save().then(savedPost => {
+                        console.log("savedPost", savedPost);
+                        dispatch(actions.asynchronousActions.createPostSuccess(savedPost))
+                    }).catch(err => {
+                        console.log("newPostError", err);
+                        dispatch(actions.asynchronousActions.createPostError(err))
+                    });
+                } catch (err) {
+                    dispatch(actions.asynchronousActions.createPostError(err));
+                }
+            }
+        },
         userSignupPending: (user) => ({
             type: ASYNCHRONOUS.USER_SIGNUP_PENDING,
             payload: user

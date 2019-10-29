@@ -19,7 +19,6 @@ class AuthLoadingScreen extends React.Component {
   _bootstrapAsync = async () => {
       try {
         const user = await Parse.User.currentAsync();
-        console.log("Parse current user async,", user);
         if (user == null) {
             this.props.navigation.navigate('Auth');
         } else {

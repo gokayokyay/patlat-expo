@@ -1,3 +1,1 @@
-export default {
-    
-}
+export const Post = require('./PostModel');

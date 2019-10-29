@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { withNavigation } from 'react-navigation';
+import formattedDateDiff from '../utilities/FormattedDateDiff';
 
 class PostComponent extends React.Component {
 
@@ -11,14 +12,15 @@ class PostComponent extends React.Component {
                 <TouchableOpacity 
                     onPress={(e) => this.props.navigation.navigate('Post')} 
                     style={styles.top.textView.container}>
-                    <Text>Just burned 2000 calories. That's the last time I leave brownies in the oven while I sleep. :)</Text>
+                    <Text>{this.props.post.get('message')}</Text>
                 </TouchableOpacity>
             )
         } else {
             return (
                 <View 
                     style={styles.top.textView.container}>
-                    <Text>Just burned 2000 calories. That's the last time I leave brownies in the oven while I sleep. :)</Text>
+                    {/* <Text>Just burned 2000 calories. That's the last time I leave brownies in the oven while I sleep. :)</Text> */}
+                    <Text>{this.props.post.get('message')}</Text>
                 </View>
             )
         }
@@ -35,7 +37,7 @@ class PostComponent extends React.Component {
                                 <Ionicons name="ios-arrow-up" size={32} color="black" />
                             </TouchableOpacity>
                             <View style={styles.top.voteView.voteCount.container}>
-                                <Text style={styles.top.voteView.voteCount.text}>24</Text>
+                                <Text style={styles.top.voteView.voteCount.text}>{this.props.post.get('votecount')}</Text>
                             </View>
                             <TouchableOpacity style={styles.top.voteView.downArrow}>
                                 <Ionicons name="ios-arrow-down" size={32} color="black" />    
@@ -44,10 +46,10 @@ class PostComponent extends React.Component {
                     </View>
                     <View style={styles.bottom.container}>
                         <View style={styles.bottom.leftView.container}>
-                            <Text style={styles.bottom.leftView.text}>6 minutes ago</Text>
+                            <Text style={styles.bottom.leftView.text}>{formattedDateDiff.apply(this.props.post)}</Text>
                         </View>
                         <View style={styles.bottom.rightView.container}>
-                            <Text style={styles.bottom.rightView.text}>3 replies</Text>
+                            <Text style={styles.bottom.rightView.text}>{this.props.post.get('replies').length} replies</Text>
                         </View>
                     </View>
                 </View>

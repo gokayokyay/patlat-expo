@@ -1,7 +1,18 @@
 import React from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, Alert } from 'react-native';
+import { connect } from 'react-redux';
+import actions from '../actions';
 
 class CreatePostComponent extends React.Component {
+    constructor(){
+        super();
+        this.state = {
+            text: ''
+        };
+    }
+    componentDidMount(){
+        console.log("CreatePostComponent:", this.props);
+    }
     render() {
         return (
             <View style={[styles.root, this.props.style]}>
@@ -9,6 +20,23 @@ class CreatePostComponent extends React.Component {
                     style={styles.textInput} 
                     placeholder="Aklında ne var?"
                     paddingLeft={12}
+                    onChangeText={(text) => this.setState({text})}
+                    onSubmitEditing={() => {
+                        if(this.state.text.length < 10 || this.state.text.length > 300) {
+                            Alert.alert(
+                                "Mesaj Hatası",
+                                "Mesajınızın uzunluğu 10 ila 300 karakter arasında olmalıdır!",
+                                [
+                                  {text: 'OK'},
+                                ]
+                              )
+                        } else {
+                            let post = {
+                                message: this.state.text
+                            };
+                            this.props.dispatch(actions.asynchronousActions.createPost(post));
+                        }
+                    }}
                 />
             </View>
         );
@@ -45,4 +73,8 @@ const styles = {
     },
 }
 
-export default CreatePostComponent;
+const mapStateToProps = (state) =>({
+    state
+});
+
+export default connect(mapStateToProps)(CreatePostComponent);

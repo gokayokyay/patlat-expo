@@ -19,7 +19,7 @@ class FeedSelectionComponent extends React.Component {
         this.props.dispatch(actions.synchronousActions.selectFeed(FEED_NAMES[0]));
     }
     componentDidMount(){
-        console.log(this.props);
+        // console.log(this.props);
     }
     render() {
         // console.log(this.props);
