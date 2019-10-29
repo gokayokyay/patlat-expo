@@ -1,0 +1,7 @@
+App.js
+store.js
+screens/HomeScreen.js
+screens/AuthLoadingScreen.js
+actions/index.js
+components/FeedSelectionComponent.js
+models/PostModel.js
